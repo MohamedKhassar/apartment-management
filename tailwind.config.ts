@@ -11,7 +11,11 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        darkBlue: "#1E1E6C"
       },
+      fontFamily: {
+        changa: ["Changa"]
+      }
     },
   },
   plugins: [],

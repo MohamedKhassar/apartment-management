@@ -6,9 +6,13 @@ import Link from 'next/link'
 import { TbLogin2 } from "react-icons/tb";
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation'
+import Cookies from 'universal-cookie'
+import { RiUser2Fill } from 'react-icons/ri'
 export default function NavBar() {
     const pathname = usePathname()
-    console.log(pathname)
+    const cookies = new Cookies(null, { path: '/' });
+    const { name, role } = cookies.getAll()
+
     const showLine = (e: MouseEvent, isHover: boolean = false) => {
         e?.preventDefault()
         const element = e.currentTarget.lastElementChild?.classList
@@ -20,7 +24,9 @@ export default function NavBar() {
 
     }
     return (
-        <div className='p-4 shadow-xl flex items-center w-full justify-between'>
+        <div className={cn('p-4 shadow-xl flex items-center w-full justify-between',
+            pathname === '/login' && 'hidden'
+        )}>
             <Link href={"/"} className='flex items-center gap-x-4'>
                 <Image src={logo.src} alt='' width={900} height={900} className=' h-[53px] w-[70px]' />
                 <h1 className='font-semibold text-xl text-[#1E1E6C]'>إقامات أبواب بوسكورة GH 3</h1>
@@ -78,7 +84,12 @@ export default function NavBar() {
                     )}></span>
                 </li >
             </ul>
-            <Link href={"/login"} className='rounded-md p-4 bg-[#E3F8FA] shadow-lg shadow-[#26C6DA] hover:text-white duration-300 hover:bg-[#76B9BF] hover:shadow-[#76B9BF] flex items-center gap-4 font-semibold' >تسجيل الدخول <TbLogin2 size={25} /></Link>
+            {(name && role)
+                ?
+                <Link href={"/dashboard"} className='rounded-md p-4 bg-[#E3F8FA] shadow-lg shadow-[#26C6DA] hover:text-white duration-300 hover:bg-[#76B9BF] hover:shadow-[#76B9BF] flex items-center gap-4 font-semibold' >{name}<RiUser2Fill size={25} /></Link>
+                :
+                <Link href={"/login"} className='rounded-md p-4 bg-[#E3F8FA] shadow-lg shadow-[#26C6DA] hover:text-white duration-300 hover:bg-[#76B9BF] hover:shadow-[#76B9BF] flex items-center gap-4 font-semibold' >تسجيل الدخول <TbLogin2 size={25} /></Link>
+            }
         </div>
     )
 }

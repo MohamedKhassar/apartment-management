@@ -3,45 +3,37 @@ import Image from "next/image";
 import React, { FormEvent, useState } from "react";
 import logo from "@/public/images/logo.png"
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import { RiLoader2Fill } from "react-icons/ri";
+import { loginUser } from "@/slice/authSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { unwrapResult } from "@reduxjs/toolkit";
 const LoginPage: React.FC = () => {
     const router = useRouter()
     const [name, setName] = useState("")
+    const { isLoading } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch()
     const handelSubmit = async (e: FormEvent) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            if (!name) {
-                toast.error("يرجى إدخال إسم المستخدم", {
-                    style: {
-                        fontFamily: "changa"
-                    }
-                });
-
-            } else {
-                await axios.post('/api/login', { name })
-                toast.success("تم تسجيل الدخول بنجاح", {
-                    style: {
-                        fontFamily: "changa"
-                    }
-                });
-                setName("")  // Clear the input field after successful login
-                setTimeout(() => {
-
-                    router.push('/')
-                }, 1000);
-            }
-
-        } catch (error) {
-            toast.error(error, {
+            const res = await dispatch(loginUser({ name }))
+            unwrapResult(res);
+            router.back();
+        } catch (err) {
+            toast.error(err as string, {
                 style: {
-                    fontFamily: "changa"
-                }
+                    fontFamily: "changa",
+                },
             });
         }
     }
     return (
-        <div className="flex flex-col items-center justify-start h-screen  gap-y-16 my-3 w-full">
+        <div className="flex flex-col items-center justify-start h-full  gap-y-16 my-3 w-full">
+            {isLoading &&
+                <div className="absolute top-0 left-0 w-full flex bg-black/30 backdrop-blur-md items-center h-full justify-center">
+                    <RiLoader2Fill className="animate-spin size-32 fill-darkBlue" />
+                </div>
+            }
             <ToastContainer
                 position="top-center"
                 autoClose={5000}

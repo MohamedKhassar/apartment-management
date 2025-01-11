@@ -1,6 +1,7 @@
 "use client"
 import AddNewYear from '@/components/AddNewYear';
 import AddUserForm from '@/components/AddUser';
+import { useAppSelector } from '@/lib/hooks';
 import { RoleEnum, UserPay } from '@/lib/types';
 import axios from 'axios';
 import { AnimatePresence } from 'motion/react';
@@ -11,6 +12,7 @@ import { TbPlus } from 'react-icons/tb';
 import { Bounce, ToastContainer } from 'react-toastify';
 
 const Page = () => {
+    const { user } = useAppSelector(state => state.auth)
     const months = [
         { english: "January", arabic: "يناير" },
         { english: "February", arabic: "فبراير" },
@@ -99,8 +101,12 @@ const Page = () => {
                                     ))}
                                 </select>
                             }
-                            <button onClick={() => setAddNewYear(true)} className='p-3 bg-darkBlue text-white rounded-lg w-fit flex items-center flex-row-reverse justify-between'><TbPlus className='size-7' /> أضف سنة جديدة</button>
-                            <button onClick={() => setAddNewUser(true)} className='p-3 bg-green-800 text-white rounded-lg w-fit flex items-center flex-row-reverse justify-between'><TbPlus className='size-7' /> أضف شخص جديدة</button>
+                            {user?.name && user.role &&
+                                <>
+                                    <button onClick={() => setAddNewYear(true)} className='p-3 bg-darkBlue text-white rounded-lg w-fit flex items-center flex-row-reverse justify-between'><TbPlus className='size-7' /> أضف سنة جديدة</button>
+                                    <button onClick={() => setAddNewUser(true)} className='p-3 bg-green-800 text-white rounded-lg w-fit flex items-center flex-row-reverse justify-between'><TbPlus className='size-7' /> أضف شخص جديدة</button>
+                                </>
+                            }
                         </div>
                         <p className='font-semibold text-darkBlue text-2xl'>سنة {currYear}</p>
                         <table className='table border-collapse border border-slate-500 w-full'>

@@ -16,3 +16,8 @@ export interface UserPay {
         { month: string, isPaid?: boolean }[],
     }[]
 }
+
+export interface UserAdmin {
+    name: string,
+    role: RoleEnum
+}

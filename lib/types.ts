@@ -4,7 +4,7 @@ export enum RoleEnum {
     SUPER_ADMIN = "superAdmin"
 }
 export interface UserPay {
-    id?: string,
+    _id?: string,
     name: string,
     homeNumber: number,
     PhoneNumber: string,

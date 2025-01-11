@@ -42,7 +42,7 @@ const AddNewYear = ({ years, setAddNewYear }: { years: { year: number }[] | unde
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { duration: .5 } }}
             exit={{ scale: 0, transition: { duration: .1 } }}
-            className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg w-1/2"
+            className="p-6 bg-white shadow-lg rounded-lg lg:w-1/4 w-1/2 mx-8 text-right"
             onSubmit={handleSubmit}
         >
 

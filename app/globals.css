@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body{
   direction: rtl;
   font-family: 'Changa';

@@ -11,9 +11,12 @@ export function middleware(request: NextRequest) {
         if (authRoutes.includes(request.nextUrl.pathname) && user.name) {
             return NextResponse.redirect(new URL("/", request.url).toString());
         }
-        if (protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route)) && !user.name) {
+    } else {
+        if (protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
+            console.log("object")
             return NextResponse.redirect(new URL("/login", request.url).toString());
         }
+
     }
 
     return NextResponse.next();

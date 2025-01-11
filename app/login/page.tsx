@@ -55,19 +55,19 @@ const LoginPage: React.FC = () => {
                     alt="Logo"
                     className="w-56 mx-auto mb-4"
                 />
-                <h1 className="text-4xl font-bold text-darkBlue">
+                <h1 className='text-center font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-darkBlue'>
                     إقامة أبواب بوسكورة GH 3
                 </h1>
             </div>
 
             {/* Form Container */}
-            <div className="bg-teal-700 text-white rounded-xl shadow-lg p-8 mt-6 w-2/6">
+            <div className="bg-teal-700 text-white rounded-xl shadow-lg p-8 mt-6 lg:w-2/6 mx-4">
                 <p className="text-center text-xl mb-6">
                     قم بالتسجيل للولوج إلى فضائك الخاص
                 </p>
 
                 {/* Form */}
-                <form onSubmit={handelSubmit}>
+                <form onSubmit={handelSubmit} className="space-y-8">
                     {/* Username Input */}
                     <div className="mb-4">
                         <label htmlFor="username" className="block mb-2">

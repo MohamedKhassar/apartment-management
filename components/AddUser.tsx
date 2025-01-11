@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, setAddNewUser: Dispatch<SetStateAction<boolean>> }) => {
     const [user, setUser] = useState<UserPay>({
         name: "",
-        homeNumber: 0,
+        homeNumber: 1,
         PhoneNumber: "",
         paymentDetails: [{
             year: Number(new Date().getFullYear()),
@@ -24,7 +24,7 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
         try {
             e.preventDefault();
             if (user.name && user.homeNumber) {
-                const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+                const arabicRegex = /^[\u0600-\u06FF\s]+$/;
                 if (arabicRegex.test(user.name)) {
                     if ((users && users.length == 0) || !users?.find(item => item.homeNumber == user.homeNumber)) {
                         console.log(user)
@@ -32,7 +32,7 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
                         if (res.statusText === "OK") {
 
                             setUser({
-                                ...user, name: "", homeNumber: 0
+                                ...user, name: "", homeNumber: 1
 
                             });
                             setTimeout(() => {
@@ -75,7 +75,7 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { duration: .5 } }}
             exit={{ scale: 0, transition: { duration: .1 } }}
-            className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg w-1/2"
+            className="p-6 bg-white shadow-lg rounded-lg lg:w-1/4 w-3/4 mx-8 text-right"
         >
             <ToastContainer
                 position="top-center"
@@ -120,6 +120,7 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
                     type="number"
                     id="homeNumber"
                     value={user.homeNumber}
+                    min={1}
                     onChange={(e) =>
                         setUser({ ...user, homeNumber: Number(e.target.value) })
                     }

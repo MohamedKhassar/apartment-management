@@ -42,7 +42,7 @@ export default function NavBar() {
         fetchUser()
     }, [pathname, dispatch])
     return (
-        <div className={cn('p-4 shadow-xl flex items-center w-full justify-between',
+        <div className={cn('p-4 shadow-xl flex items-center w-full justify-between sticky left-0 top-0',
             pathname === '/login' && 'hidden'
         )}>
             <Link href={"/monthly-list"} className='flex items-center gap-x-4 w-fit'>

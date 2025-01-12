@@ -1,13 +1,9 @@
 "use client"
-import AddNewYear from '@/components/AddNewYear';
-import AddUserForm from '@/components/AddUser';
 import { RoleEnum, UserPay } from '@/lib/types';
 import axios from 'axios';
-import { AnimatePresence } from 'motion/react';
 import React, { useEffect, useState } from 'react'
 import { IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
 import { RiLoader5Fill } from "react-icons/ri";
-import { Bounce, ToastContainer } from 'react-toastify';
 
 const Page = () => {
     const months = [
@@ -24,8 +20,6 @@ const Page = () => {
         { english: "November", arabic: "نوفمبر" },
         { english: "December", arabic: "ديسمبر" }
     ];
-    const [addNewYear, setAddNewYear] = useState(false);
-    const [addNewUser, setAddNewUser] = useState(false);
     const [currYear, setCurrYear] = useState(Number(new Date().getFullYear()));
     const [userPay, setUserPay] = useState<UserPay[]>();
     const [years, setYears] = useState<{ year: number }[]>();
@@ -41,42 +35,15 @@ const Page = () => {
             }
         };
         fetchData();
-    }, [currYear, addNewYear, addNewUser]);
+    }, [currYear]);
 
 
     return (
-        <div className='flex flex-col gap-y-32 mx-8 justify-center ' >
-            <AnimatePresence>
-                {addNewYear ? (
-                    <div className='absolute bg-black/30 backdrop-blur-md w-full h-screen left-0 top-0 flex justify-center items-center z-50'>
-                        <IoCloseCircle size={40} className='cursor-pointer text-red-500 hover:text-red-700 duration-300 absolute right-3 top-5' onClick={() => setAddNewYear(false)} />
-                        <AddNewYear years={years} setAddNewYear={setAddNewYear} />
-                    </div>
-                ) : addNewUser ? (
-                    <div className='absolute bg-black/30 backdrop-blur-md w-full h-screen left-0 top-0 flex justify-center items-center z-50'>
-                        <IoCloseCircle size={40} className='cursor-pointer text-red-500 hover:text-red-700 duration-300 absolute right-3 top-5' onClick={() => setAddNewUser(false)} />
-                        <AddUserForm users={userPay} setAddNewUser={setAddNewUser} />
-                    </div>
-                ) : null}
-            </AnimatePresence>
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-                closeButton={false}
-                transition={Bounce}
-            />
+        <div className='flex flex-col lg:gap-y-32 gap-y-10 mx-8 justify-center items-center my-24' >
             <h1 className='text-center font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-darkBlue'>لائحة الأداء الشهري</h1>
             {userPay ? (
                 <div className='w-full space-y-4'>
-                    <div className='grid grid-cols-2 w-1/2 gap-x-4 items-center'>
+                    <div className='grid lg:grid-cols-2 lg:w-1/2 gap-x-4 items-center'>
                         {years && years.length > 0 && (
                             <select
                                 onChange={(e) => setCurrYear(Number(e.target.value))}

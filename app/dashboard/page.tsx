@@ -133,7 +133,7 @@ const Page = () => {
             {
                 userPay ? (
                     <div className='w-full space-y-4'>
-                        <div className='flex flex-wrap sm:flex-nowrap gap-x-4 gap-y-4 items-center'>
+                        <div className='flex flex-wrap md:flex-nowrap gap-x-4 gap-y-4 items-center'>
                             {years && years.length > 0 &&
                                 <select
                                     onChange={(e) => setCurrYear(Number(e.target.value))}

@@ -1,8 +1,7 @@
 import userPaySchema from "@/models/userPaySchema";
-import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
-export const DELETE = async (req: NextApiRequest, { params }: { params: { id: string } }) => {
+export const DELETE = async (req: Response, { params }: { params: { id: string } }) => {
     try {
         const { id } = params
         await userPaySchema.findByIdAndDelete(id);

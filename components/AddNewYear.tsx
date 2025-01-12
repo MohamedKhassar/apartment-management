@@ -9,7 +9,6 @@ const AddNewYear = ({ years, setAddNewYear }: { years: { year: number }[] | unde
         e.preventDefault()
         try {
             if (years?.find(({ year }) => year === newYear)) {
-                console.log("ds")
                 toast.error(`السنة موجودة مسبقا`, {
                     style: {
                         fontFamily: "changa"

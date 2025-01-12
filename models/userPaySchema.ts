@@ -13,9 +13,10 @@ const PaymentDetailsSchema = new mongoose.Schema({
 const UserPaySchema = new mongoose.Schema({
     name: { type: String, required: true },
     homeNumber: { type: Number, required: true, unique: true },
-    phoneNumber: { type: Number, unique: true, nullable: true },
+    phoneNumber: {
+        type: String, unique: true
+    },
     role: { type: String, enum: ['admin', 'superAdmin', 'user'], default: "user" },
     paymentDetails: { type: [PaymentDetailsSchema], default: [] }
 });
-
 export default mongoose.models.users || mongoose.model("users", UserPaySchema);

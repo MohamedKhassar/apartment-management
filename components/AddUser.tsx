@@ -2,14 +2,14 @@
 import { UserPay } from "@/lib/types";
 import axios from "axios";
 import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "motion/react";
 const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, setAddNewUser: Dispatch<SetStateAction<boolean>> }) => {
     const [user, setUser] = useState<UserPay>({
         name: "",
         homeNumber: 1,
-        PhoneNumber: "",
+        phoneNumber: "",
         paymentDetails: [{
             year: Number(new Date().getFullYear()),
             monthlyPay: [
@@ -77,20 +77,6 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
             exit={{ scale: 0, transition: { duration: .1 } }}
             className="p-6 bg-white shadow-lg rounded-lg lg:w-1/4 w-3/4 mx-8 text-right"
         >
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-                closeButton={false}
-                transition={Bounce}
-            />
             <h2 className="text-2xl font-bold mb-6">إضافة شخص</h2>
 
             {/* Name */}
@@ -138,9 +124,9 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
                 <input
                     type="tel"
                     id="PhoneNumber"
-                    value={user.PhoneNumber}
+                    value={user.phoneNumber}
                     onChange={(e) =>
-                        setUser({ ...user, PhoneNumber: e.target.value })
+                        setUser({ ...user, phoneNumber: e.target.value })
                     }
                     placeholder="ادخل رقم الهاتف"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 placeholder:text-right"

@@ -4,8 +4,8 @@ import "@/lib/connectDB"
 import { Error } from "mongoose";
 export const POST = async (req: NextRequest) => {
     try {
-        const data = await req.json()
-        await userPaySchema.create(data)
+        const user = await req.json()
+        await userPaySchema.create(user)
         return NextResponse.json({
             message: "تمت إضافة شخص بنجاح"
         });
@@ -56,6 +56,7 @@ export const PUT = async (req: NextRequest) => {
 export const PATCH = async (req: NextRequest) => {
     try {
         const { _id, user } = await req.json();
+        console.log(typeof user.phoneNumber)
         await userPaySchema.findByIdAndUpdate({ _id }, user);
         return NextResponse.json({ message: 'تم تحديث الشخص بنجاح' });
     } catch (error) {

@@ -2,7 +2,7 @@
 import { RoleEnum, UserPay } from "@/lib/types";
 // import axios from "axios";
 import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "motion/react";
 import axios from "axios";
@@ -12,7 +12,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
         name: userData?.name || "",
         homeNumber: userData?.homeNumber || 0,
         role: userData?.role,
-        PhoneNumber: userData?.PhoneNumber || "",
+        phoneNumber: userData?.phoneNumber ? `0${userData?.phoneNumber}` : "",
     })
     const role = useAppSelector(state => state.auth.user?.role)
     const handleSubmit = async (e: FormEvent) => {
@@ -20,27 +20,36 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
         if (user.name && user.homeNumber) {
             const arabicRegex = /^[\u0600-\u06FF\s]+$/;
             if (arabicRegex.test(user.name)) {
-                try {
-                    const res = await axios.patch('/api/users', { _id: userData?._id, user });
-                    toast.success(res.data.message, {
-                        style: {
-                            fontFamily: "changa"
-                        }
-                    });
-                    setTimeout(() => {
-                        setEditUser(false)
-                    }, 1000);
-                }
-                catch (error) {
-                    if (axios.isAxiosError(error) && error.response) {
-                        toast.error(error.response.data.message, {
+                if (user.phoneNumber?.length == 10 || user.phoneNumber?.length == 0) {
+                    try {
+
+                        const res = await axios.patch('/api/users', { _id: userData?._id, user });
+                        toast.success(res.data.message, {
                             style: {
                                 fontFamily: "changa"
                             }
                         });
+                        setTimeout(() => {
+                            setEditUser(false)
+                        }, 1000);
                     }
-
+                    catch (error) {
+                        if (axios.isAxiosError(error) && error.response) {
+                            toast.error(error.response.data.message, {
+                                style: {
+                                    fontFamily: "changa"
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    toast.error("رقم الهاتف يجب أن لا يتعدى أو يقل عن 10 أرقام", {
+                        style: {
+                            fontFamily: "changa"
+                        }
+                    });
                 }
+
             } else {
                 toast.error("الإسم يجب أن يكون عربي", {
                     style: {
@@ -89,20 +98,6 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
             exit={{ scale: 0, transition: { duration: .1 } }}
             className="p-6 bg-white shadow-lg rounded-lg sm:w-1/2 w-full mx-8 text-right"
         >
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-                closeButton={false}
-                transition={Bounce}
-            />
             <h2 className="text-2xl font-bold mb-6">تعديل  شخص</h2>
 
             {/* Name */}
@@ -147,12 +142,12 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
                     رقم الهاتف
                 </label>
                 <input
-                    type="tel"
+                    type="text"
                     id="PhoneNumber"
-                    defaultValue={user?.PhoneNumber}
-                    onChange={(e) =>
-                        setUser({ ...user, PhoneNumber: e.target.value })
-                    }
+                    defaultValue={String(user?.phoneNumber)}
+                    onChange={(e) => {
+                        setUser({ ...user, phoneNumber: e.target.value })
+                    }}
                     placeholder="ادخل رقم الهاتف"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 placeholder:text-right"
                 />
@@ -172,6 +167,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
                         name="" id="">
                         <option className="capitalize" value={RoleEnum.USER}>{RoleEnum.USER}</option>
                         <option className="capitalize" value={RoleEnum.ADMIN}>{RoleEnum.ADMIN}</option>
+                        <option className="capitalize" value={RoleEnum.SUPER_ADMIN}>{RoleEnum.SUPER_ADMIN}</option>
                     </select>
                 </div>
             }

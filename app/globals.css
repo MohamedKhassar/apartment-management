@@ -1,6 +1,5 @@
-/* Import nprogress styles */
-@import 'nprogress/nprogress.css';
 @import url('https://fonts.googleapis.com/css2?family=Changa:wght@200..800&display=swap');
+@import 'nprogress/nprogress.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,7 +16,7 @@
 
 body{
   direction: rtl;
-  font-family: 'Changa';
+  @apply font-changa
 }
 
 .loader {

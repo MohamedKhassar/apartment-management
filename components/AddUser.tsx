@@ -18,7 +18,7 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
             ],
         }]
     });
-
+    const [loading, setLoading] = useState(false)
 
     const addUser = async (e: FormEvent) => {
         try {
@@ -27,7 +27,7 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
                 const arabicRegex = /^[\u0600-\u06FF\s]+$/;
                 if (arabicRegex.test(user.name)) {
                     if ((users && users.length == 0) || !users?.find(item => item.homeNumber == user.homeNumber)) {
-                        console.log(user)
+                        setLoading(true)
                         const res = await axios.post("/api/users", user);
                         if (res.statusText === "OK") {
 
@@ -37,6 +37,7 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
                             });
                             setTimeout(() => {
                                 setAddNewUser(false)
+                                setLoading(false)
                             }, 1000);
                             toast.success(res.data.message, {
                                 style: {
@@ -135,7 +136,8 @@ const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, s
 
             <button
                 onClick={addUser}
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+                disabled={loading}
+                className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:cursor-wait"
             >
                 إضافة شخص
             </button>

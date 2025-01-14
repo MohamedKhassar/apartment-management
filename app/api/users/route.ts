@@ -6,6 +6,7 @@ export const POST = async (req: NextRequest) => {
     try {
         const user = await req.json()
         await userPaySchema.create(user)
+        console.log(user)
         return NextResponse.json({
             message: "تمت إضافة شخص بنجاح"
         });

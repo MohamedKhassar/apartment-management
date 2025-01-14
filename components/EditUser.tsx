@@ -14,6 +14,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
         role: userData?.role,
         phoneNumber: userData?.phoneNumber ? `0${userData?.phoneNumber}` : "",
     })
+    const [loading, setLoading] = useState(false);
     const role = useAppSelector(state => state.auth.user?.role)
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -22,7 +23,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
             if (arabicRegex.test(user.name)) {
                 if (user.phoneNumber?.length == 10 || user.phoneNumber?.length == 0) {
                     try {
-
+                        setLoading(true);
                         const res = await axios.patch('/api/users', { _id: userData?._id, user });
                         toast.success(res.data.message, {
                             style: {
@@ -30,7 +31,8 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
                             }
                         });
                         setTimeout(() => {
-                            setEditUser(false)
+                            setLoading(false);
+                            setEditUser(false);
                         }, 1000);
                     }
                     catch (error) {
@@ -69,7 +71,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
     const handleDelete = async (e: FormEvent) => {
         e.preventDefault();
         try {
-
+            setLoading(true);
             const res = await axios.delete(`/api/users/${userData?._id}`);
             toast.success(res.data.message, {
                 style: {
@@ -78,6 +80,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
             });
             setTimeout(() => {
                 setEditUser(false)
+                setLoading(false);
             }, 1000);
         }
         catch (error) {
@@ -175,13 +178,15 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
 
                 <button
                     onClick={handleSubmit}
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+                    disabled={loading}
+                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:cursor-wait"
                 >
                     تعديل  شخص
                 </button>
                 <button
                     onClick={handleDelete}
-                    className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200"
+                    disabled={loading}
+                    className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200 disabled:cursor-wait"
                 >
                     حذف  شخص
                 </button>

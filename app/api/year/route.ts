@@ -6,7 +6,7 @@ export const POST = async (req: NextRequest) => {
     try {
         const { year } = await req.json()
         await yearSchema.create({ year: Number(year) })
-        await userPaySchema.updateMany({}, {
+        await userPaySchema.updateMany({ role: { $in: ['user', "admin"] } }, {
             $push: {
                 paymentDetails: {
                     year: Number(year),

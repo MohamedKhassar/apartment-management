@@ -5,6 +5,7 @@ import axios from 'axios'
 
 const AddNewYear = ({ years, setAddNewYear }: { years: { year: number }[] | undefined, setAddNewYear: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const [newYear, setNewYear] = useState(Number(new Date().getFullYear()))
+    const [loading, setLoading] = useState(false)
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         try {
@@ -16,9 +17,10 @@ const AddNewYear = ({ years, setAddNewYear }: { years: { year: number }[] | unde
                 });
                 return
             } else {
-
+                setLoading(true)
                 const year = await axios.post("/api/year", { year: newYear })
                 setTimeout(() => {
+                    setLoading(false)
                     setAddNewYear(false)
                 }, 1000);
                 toast.success(year.data.message, {
@@ -61,7 +63,8 @@ const AddNewYear = ({ years, setAddNewYear }: { years: { year: number }[] | unde
             </div>
             <button
                 type='submit'
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+                disabled={loading}
+                className="w-full disabled:cursor-wait bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
             >
                 إضافة سنة جديدة
             </button>

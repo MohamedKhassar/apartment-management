@@ -4,7 +4,6 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import StoreProvider from "@/lib/StoreProvider";
 import Loader from "@/components/Loader";
-import { Bounce, ToastContainer } from "react-toastify";
 import logo from "@/public/images/logo.png";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,20 +32,6 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-            closeButton={false}
-            transition={Bounce}
-          />
           <Loader />
 
           <NavBar />

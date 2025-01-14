@@ -38,7 +38,7 @@ const CardPopup: React.FC<CardPopupProps> = ({ user: { name, homeNumber, phoneNu
                     {phoneNumber &&
                         <div>
                             <span className="block text-sm text-gray-500">رقم الهاتف:</span>
-                            <span className="block text-lg font-semibold text-gray-800">0{phoneNumber}</span>
+                            <span className="block text-lg font-semibold text-gray-800">{phoneNumber}</span>
                         </div>
                     }
                 </div>

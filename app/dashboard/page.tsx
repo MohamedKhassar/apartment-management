@@ -80,7 +80,7 @@ const Page = () => {
                                 detail.year === currYear
                                     ? {
                                         ...detail,
-                                        monthlyPay: detail.monthlyPay.map(payment =>
+                                        monthlyPay: detail.monthlyPay?.map(payment =>
                                             payment.month === month
                                                 ? { ...payment, isPaid }
                                                 : payment
@@ -110,7 +110,7 @@ const Page = () => {
                     ) : addNewUser ? (
                         <div className='absolute bg-black/30 backdrop-blur-md w-full h-screen left-0 top-0 flex justify-center items-center z-50'>
                             <IoCloseCircle size={40} className='cursor-pointer text-red-500 hover:text-red-700 duration-300 absolute right-3 top-5' onClick={() => setAddNewUser(false)} />
-                            <AddUserForm users={userPay} setAddNewUser={setAddNewUser} />
+                            <AddUserForm year={currYear} users={userPay} setAddNewUser={setAddNewUser} />
                         </div>
                     ) : null
                 }
@@ -219,7 +219,7 @@ const Page = () => {
                                                             </AnimatePresence>
                                                         </td>
 
-                                                        {user.paymentDetails.find(({ year }) => year == currYear)?.monthlyPay.map(({ isPaid, month }, i) => (
+                                                        {user.paymentDetails.find(({ year }) => year == currYear)?.monthlyPay?.map(({ isPaid, month }, i) => (
                                                             <td className="table-cell border border-slate-600 p-3 justify-center" key={i}>
                                                                 <input
                                                                     type="checkbox"

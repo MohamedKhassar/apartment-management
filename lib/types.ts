@@ -12,7 +12,8 @@ export interface UserPay {
     paymentDetails:
     {
         year: number,
-        monthlyPay:
+        monthlyPay
+        ?:
         { month: string, isPaid?: boolean }[],
     }[]
 }

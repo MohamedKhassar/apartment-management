@@ -5,17 +5,13 @@ import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "motion/react";
-const AddUserForm = ({ users, setAddNewUser }: { users: UserPay[] | undefined, setAddNewUser: Dispatch<SetStateAction<boolean>> }) => {
+const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: UserPay[] | undefined, setAddNewUser: Dispatch<SetStateAction<boolean>> }) => {
     const [user, setUser] = useState<UserPay>({
         name: "",
         homeNumber: 1,
         phoneNumber: "",
         paymentDetails: [{
-            year: Number(new Date().getFullYear()),
-            monthlyPay: [
-                { month: "January" }, { month: "February" }, { month: "March" }, { month: "April" }, { month: "May" }, { month: "June" },
-                { month: "July" }, { month: "August" }, { month: "September" }, { month: "October" }, { month: "November" }, { month: "December" }
-            ],
+            year: year,
         }]
     });
     const [loading, setLoading] = useState(false)

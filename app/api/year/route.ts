@@ -10,20 +10,6 @@ export const POST = async (req: NextRequest) => {
             $push: {
                 paymentDetails: {
                     year: Number(year),
-                    monthlyPay: [
-                        { month: "January", isPaid: false },
-                        { month: "February", isPaid: false },
-                        { month: "March", isPaid: false },
-                        { month: "April", isPaid: false },
-                        { month: "May", isPaid: false },
-                        { month: "June", isPaid: false },
-                        { month: "July", isPaid: false },
-                        { month: "August", isPaid: false },
-                        { month: "September", isPaid: false },
-                        { month: "October", isPaid: false },
-                        { month: "November", isPaid: false },
-                        { month: "December", isPaid: false }
-                    ]
                 }
             }
         })

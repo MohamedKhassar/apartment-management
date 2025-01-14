@@ -12,7 +12,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
         name: userData?.name || "",
         homeNumber: userData?.homeNumber || 0,
         role: userData?.role,
-        phoneNumber: userData?.phoneNumber ? `0${userData?.phoneNumber}` : "",
+        phoneNumber: userData?.phoneNumber ? `${userData?.phoneNumber}` : "",
     })
     const [loading, setLoading] = useState(false);
     const role = useAppSelector(state => state.auth.user?.role)

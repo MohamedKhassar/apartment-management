@@ -80,7 +80,7 @@ const Page = () => {
                                                 <tr className='table-row' key={i}>
                                                     <td className='table-cell border border-slate-600 text-center'>{user.homeNumber}</td>
                                                     <td className='table-cell border border-slate-600 p-3 text-center'>{user.name}</td>
-                                                    {user.paymentDetails.find(({ year }) => year == currYear)?.monthlyPay.map(({ isPaid }, i) => (
+                                                    {user.paymentDetails.find(({ year }) => year == currYear)?.monthlyPay?.map(({ isPaid }, i) => (
                                                         <td className='table-cell border border-slate-600 p-3' key={i}>
                                                             {isPaid ? <IoCheckmarkCircle className='fill-green-600 size-7 w-full' /> : <IoCloseCircle className='fill-red-600 size-7 w-full' />}
                                                         </td>

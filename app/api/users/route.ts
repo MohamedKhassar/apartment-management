@@ -5,6 +5,7 @@ import { Error } from "mongoose";
 export const POST = async (req: NextRequest) => {
     try {
         const user = await req.json()
+        console.log(user)
         await userPaySchema.create(user)
         return NextResponse.json({
             message: "تمت إضافة شخص بنجاح"

@@ -7,13 +7,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { motion } from "motion/react";
 import axios from "axios";
 import { useAppSelector } from "@/lib/hooks";
-const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined, setEditUser: Dispatch<SetStateAction<boolean>> }) => {
-    const [user, setUser] = useState({
-        name: userData?.name || "",
-        homeNumber: userData?.homeNumber || 0,
-        role: userData?.role,
-        phoneNumber: userData?.phoneNumber ? `${userData?.phoneNumber}` : "",
+const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUser: Dispatch<SetStateAction<boolean>> }) => {
+    const [user, setUser] = useState<UserPay>({
+        name: userData.name || "",
+        homeNumber: userData.homeNumber || 0,
+        role: userData.role,
+        paymentDetails: userData.paymentDetails,
+        phoneNumber: userData?.phoneNumber ? `${userData?.phoneNumber}` : undefined,
     })
+    const handleData = (key: string, value: string | number) => {
+        setUser((prevData) => ({
+            ...prevData,
+            [key]: value,
+        }));
+    };
     const [loading, setLoading] = useState(false);
     const role = useAppSelector(state => state.auth.user?.role)
     const handleSubmit = async (e: FormEvent) => {
@@ -21,7 +28,8 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
         if (user.name && user.homeNumber) {
             const arabicRegex = /^[\u0600-\u06FF\s]+$/;
             if (arabicRegex.test(user.name)) {
-                if (user.phoneNumber?.length == 10 || user.phoneNumber?.length == 0) {
+                console.log(user.phoneNumber?.length == 10);
+                if (user.phoneNumber?.length == 10 || user.phoneNumber?.length == 0 || user.phoneNumber == undefined) {
                     try {
                         setLoading(true);
                         const res = await axios.patch('/api/users', { _id: userData?._id, user });
@@ -112,8 +120,9 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
                     type="text"
                     id="name"
                     defaultValue={user?.name}
-                    onChange={(e) => setUser({ ...user, name: e.target.value })}
-                    placeholder="ادخل الإسم"
+                    onChange={(e) =>
+                        handleData("name", e.target.value)
+                    } placeholder="ادخل الإسم"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                 />
             </div>
@@ -131,7 +140,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
                     id="homeNumber"
                     defaultValue={user?.homeNumber}
                     onChange={(e) =>
-                        setUser({ ...user, homeNumber: Number(e.target.value) })
+                        handleData("homeNumber", Number(e.target.value))
                     }
                     placeholder="Enter home number"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
@@ -147,10 +156,10 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
                 <input
                     type="text"
                     id="PhoneNumber"
-                    defaultValue={String(user?.phoneNumber)}
-                    onChange={(e) => {
-                        setUser({ ...user, phoneNumber: e.target.value })
-                    }}
+                    defaultValue={user?.phoneNumber}
+                    onChange={(e) =>
+                        handleData("phoneNumber", e.target.value)
+                    }
                     placeholder="ادخل رقم الهاتف"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 placeholder:text-right"
                 />
@@ -166,7 +175,9 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay | undefined
                     <select
                         className="border border-darkBlue rounded-lg p-3 appearance-none w-full capitalize text-left font-semibold"
                         defaultValue={userData?.role}
-                        onChange={(e) => setUser({ ...user, role: e.target.value as RoleEnum })}
+                        onChange={(e) =>
+                            handleData("role", e.target.value as RoleEnum)
+                        }
                         name="" id="">
                         <option className="capitalize" value={RoleEnum.USER}>{RoleEnum.USER}</option>
                         <option className="capitalize" value={RoleEnum.ADMIN}>{RoleEnum.ADMIN}</option>

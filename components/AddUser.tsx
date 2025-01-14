@@ -9,11 +9,16 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
     const [user, setUser] = useState<UserPay>({
         name: "",
         homeNumber: 1,
-        phoneNumber: "",
         paymentDetails: [{
             year: year,
         }]
     });
+    const handleData = (key: string, value: string | number) => {
+        setUser((prevData) => ({
+            ...prevData,
+            [key]: value,
+        }));
+    };
     const [loading, setLoading] = useState(false)
 
     const addUser = async (e: FormEvent) => {
@@ -64,7 +69,11 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
             }
         } catch (err) {
             console.log(err)
-
+            toast.error('المرجو ملئ جميع المعلومات', {
+                style: {
+                    fontFamily: "changa"
+                }
+            });
         }
     }
     return (
@@ -85,8 +94,9 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
                     type="text"
                     id="name"
                     value={user.name}
-                    onChange={(e) => setUser({ ...user, name: e.target.value })}
-                    placeholder="ادخل الإسم"
+                    onChange={(e) =>
+                        handleData("name", e.target.value)
+                    } placeholder="ادخل الإسم"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                 />
             </div>
@@ -105,7 +115,7 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
                     value={user.homeNumber}
                     min={1}
                     onChange={(e) =>
-                        setUser({ ...user, homeNumber: Number(e.target.value) })
+                        handleData("homeNumber", Number(e.target.value))
                     }
                     placeholder="Enter home number"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
@@ -114,16 +124,16 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
             <div className="mb-4">
                 <label
                     className="block text-gray-700 font-medium mb-2"
-                    htmlFor="PhoneNumber"
+                    htmlFor="phoneNumber"
                 >
                     رقم الهاتف
                 </label>
                 <input
                     type="tel"
-                    id="PhoneNumber"
+                    id="phoneNumber"
                     value={user.phoneNumber}
                     onChange={(e) =>
-                        setUser({ ...user, phoneNumber: e.target.value })
+                        handleData("phoneNumber", e.target.value)
                     }
                     placeholder="ادخل رقم الهاتف"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 placeholder:text-right"

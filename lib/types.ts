@@ -7,7 +7,7 @@ export interface UserPay {
     _id?: string,
     name: string,
     homeNumber: number,
-    phoneNumber: string,
+    phoneNumber?: string,
     role?: RoleEnum
     paymentDetails:
     {

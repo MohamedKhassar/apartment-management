@@ -42,7 +42,7 @@ export default function NavBar() {
         fetchUser()
     }, [pathname, dispatch])
     return (
-        <div className={cn('p-4 shadow-xl flex items-center w-full justify-between sticky left-0 top-0',
+        <div className={cn('p-4 shadow-xl flex items-center w-full justify-between sticky left-0 top-0 z-50 bg-white',
             pathname === '/login' && 'hidden'
         )}>
             <Link href={"/monthly-list"} className='flex items-center gap-x-4 w-fit'>
@@ -140,10 +140,10 @@ export default function NavBar() {
                             dispatch(logout())
                             router.refresh()
                         }}
-                        className={`cursor-pointer rounded-md p-4 bg-red-600 shadow-lg shadow-red-800 text-white duration-300 hover:bg-red-700 hover:shadow-red-950 items-center gap-2 font-semibold absolute left-0 text-nowrap text-sm w-full ${showLogout ? 'md:flex' : 'hidden'}`}
+                        className={`cursor-pointer rounded-md p-4 bg-red-600 shadow-lg shadow-red-800 text-white duration-300 hover:bg-red-700 hover:shadow-red-950 items-center gap-2 font-semibold absolute left-0 text-nowrap text-sm w-fit ${showLogout ? 'md:flex' : 'hidden'}`}
                     >
                         تسجيل الخروج
-                        <IoLogOut size={25} />
+                        <IoLogOut className='size-5' />
                     </button>
                 </div>
 
@@ -254,10 +254,9 @@ export default function NavBar() {
                                                 dispatch(logout())
                                                 router.refresh()
                                             }}
-                                            className={`cursor-pointer rounded-md p-4 bg-red-600 shadow-lg shadow-red-800 text-white duration-300 hover:bg-red-700 hover:shadow-red-950 items-center gap-2 font-semibold absolute left-0 text-nowrap text-sm w-full ${showLogout ? 'flex' : 'hidden'}`}
+                                            className={`cursor-pointer rounded-md p-4 bg-red-600 shadow-lg shadow-red-800 text-white duration-300 hover:bg-red-700 hover:shadow-red-950 items-center text-center font-semibold text-nowrap text-sm w-full ${showLogout ? 'flex' : 'hidden'}`}
                                         >
                                             تسجيل الخروج
-                                            <IoLogOut size={25} />
                                         </button>
                                     </div>
 

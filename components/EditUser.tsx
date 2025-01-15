@@ -9,6 +9,7 @@ import axios from "axios";
 import { useAppSelector } from "@/lib/hooks";
 import { copyPass, generatePass } from "@/lib/generatePassword";
 import { IoCopy } from "react-icons/io5";
+import { cn } from "@/lib/utils";
 const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUser: Dispatch<SetStateAction<boolean>> }) => {
     const [user, setUser] = useState<UserPay>({
         name: userData.name || "",
@@ -24,7 +25,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
         }));
     };
     const [loading, setLoading] = useState(false);
-    const role = useAppSelector(state => state.auth.user?.role)
+    const auth = useAppSelector(state => state.auth.user)
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (user.name && user.homeNumber) {
@@ -145,7 +146,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                 />
             </div>
-            {role == RoleEnum.SUPER_ADMIN &&
+            {auth?.role == RoleEnum.SUPER_ADMIN &&
                 <div className="mb-4">
                     <label
                         className="block text-gray-700 font-medium mb-2"
@@ -166,7 +167,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
                 </div>
             }
             {
-                ((user.role == RoleEnum.ADMIN || user.role == RoleEnum.SUPER_ADMIN) && role == RoleEnum.SUPER_ADMIN) &&
+                (user.role != RoleEnum.USER && (auth?.role == RoleEnum.SUPER_ADMIN || auth?.name == user.name)) &&
                 <div className="mb-4">
                     <label
                         className="block text-gray-700 font-medium mb-2"
@@ -174,10 +175,10 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
                     >
                         كلمة المرور
                     </label>
-                    <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-3">
+                    <div className={cn("grid grid-cols-1 gap-3",
+                        auth?.role !== RoleEnum.SUPER_ADMIN ? "grid-cols-1" : "lg:grid-cols-2"
+                    )}>
                         <div className="relative flex items-center">
-
-
                             <input
                                 type="text"
                                 id="password"
@@ -198,7 +199,10 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
                             }
 
                         </div>
-                        <button onClick={generatePasswords} className="bg-green-800 rounded-md text-white capitalize w-full p-3">{user.password ? "regenerate" : "generate"} password</button>
+                        {
+                            auth?.role == RoleEnum.SUPER_ADMIN &&
+                            <button onClick={generatePasswords} className="bg-green-800 rounded-md text-white capitalize w-full p-3">{user.password ? "regenerate" : "generate"} password</button>
+                        }
                     </div>
                 </div>
             }

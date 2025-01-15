@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
         try {
             const res = await dispatch(loginUser({ user }))
             unwrapResult(res);
-            router.back();
+            router.push("/dashboard");
         } catch (err) {
             toast.error(err as string, {
                 style: {

@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     if (cookie) {
         const user: UserAdmin = JSON.parse(cookie)
         if (authRoutes.includes(request.nextUrl.pathname) && user.name) {
-            return NextResponse.redirect(new URL("/", request.url).toString());
+            return NextResponse.redirect(new URL("/dashboard", request.url).toString());
         }
     } else {
         if (protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {

@@ -20,62 +20,45 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
         }));
     };
     const [loading, setLoading] = useState(false)
+    const arabicRegex = /^[\u0600-\u06FF\s]+$/;
+    const toastStyle = { fontFamily: "changa" };
 
     const addUser = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!user.name || !user.homeNumber) {
+            toast.error("المرجو ملئ جميع المعلومات", { style: toastStyle });
+            return;
+        }
+        if (!arabicRegex.test(user.name)) {
+            toast.error("الإسم يجب أن يكون عربي", { style: toastStyle });
+            return;
+        }
+        const isDuplicate = users?.some(item => item.homeNumber === user.homeNumber);
+        if (isDuplicate) {
+            toast.error("رقم المنزل مكرر", { style: toastStyle });
+            return;
+        }
         try {
-            e.preventDefault();
-            if (user.name && user.homeNumber) {
-                const arabicRegex = /^[\u0600-\u06FF\s]+$/;
-                if (arabicRegex.test(user.name)) {
-                    if ((users && users.length == 0) || !users?.find(item => item.homeNumber == user.homeNumber)) {
-                        setLoading(true)
-                        const res = await axios.post("/api/users", user);
-                        if (res.statusText === "OK") {
+            setLoading(true);
+            const res = await axios.post("/api/users", user);
 
-                            setUser({
-                                ...user, name: "", homeNumber: 1
+            if (res.status === 200) {
+                setUser({ ...user, name: "", homeNumber: 1 });
+                setTimeout(() => {
+                    setAddNewUser(false);
+                    setLoading(false);
+                }, 1000);
 
-                            });
-                            setTimeout(() => {
-                                setAddNewUser(false)
-                                setLoading(false)
-                            }, 1000);
-                            toast.success(res.data.message, {
-                                style: {
-                                    fontFamily: "changa"
-                                }
-                            });
-                        }
-                    } else {
-                        toast.error("رقم المنزل مكرر", {
-                            style: {
-                                fontFamily: "changa"
-                            }
-                        });
-                    }
-                } else {
-                    toast.error("الإسم يجب أن يكون عربي", {
-                        style: {
-                            fontFamily: "changa"
-                        }
-                    });
-                }
-            } else {
-                toast.error('المرجو ملئ جميع المعلومات', {
-                    style: {
-                        fontFamily: "changa"
-                    }
-                });
+                toast.success(res.data.message, { style: toastStyle });
             }
         } catch (err) {
-            console.log(err)
-            toast.error('المرجو ملئ جميع المعلومات', {
-                style: {
-                    fontFamily: "changa"
-                }
-            });
+            console.error("Error adding user:", err);
+            toast.error("حدث خطأ أثناء إضافة المستخدم", { style: toastStyle });
+        } finally {
+            setLoading(false);
         }
-    }
+    };
+
     return (
         <motion.form
             initial={{ scale: 0 }}

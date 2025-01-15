@@ -1,6 +1,7 @@
 "use client"
 import AddNewYear from '@/components/AddNewYear';
 import AddUserForm from '@/components/AddUser';
+import CardPopup from '@/components/CardPopUp';
 import EditUserForm from '@/components/EditUser';
 import { useAppSelector } from '@/lib/hooks';
 import { RoleEnum, UserPay } from '@/lib/types';
@@ -13,6 +14,12 @@ import { TbPlus } from 'react-icons/tb';
 import { Bounce, ToastContainer } from 'react-toastify';
 
 const Page = () => {
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const openPopup = (user: UserPay) => {
+        setSelectedUser(user)
+        setIsPopupOpen(!isPopupOpen)
+    };
     const { user } = useAppSelector(state => state.auth)
     const months = [
         "يناير",
@@ -61,6 +68,7 @@ const Page = () => {
                 year: currYear,
                 monthlyPay: { month, isPaid }
             };
+
             // Send the update to the backend API
             await axios.put('/api/users', payload);
             setUserPay((prevUserPay) =>
@@ -179,9 +187,22 @@ const Page = () => {
                                                                 onClick={() => handleEditUser(user)}
                                                                 className='fill-darkBlue cursor-pointer'
                                                             />
+                                                            <p className='cursor-pointer' onClick={() => openPopup(user)}>
 
-                                                            {user.name}
+                                                                {user.name}
+                                                            </p>
                                                             <AnimatePresence>
+                                                                {(isPopupOpen && selectedUser) && (
+                                                                    <CardPopup
+                                                                        user={selectedUser}
+                                                                        onClose={() => {
+                                                                            setIsPopupOpen(false)
+                                                                            setSelectedUser(null);
+                                                                        }}
+                                                                    />
+                                                                )}
+
+
                                                                 {editUser && selectedUser && (
                                                                     <div className='absolute bg-black/30 backdrop-blur-md w-full h-screen left-0 top-0 flex justify-center items-center z-50'>
                                                                         <IoCloseCircle

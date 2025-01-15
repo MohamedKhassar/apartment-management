@@ -12,10 +12,10 @@ const initialState: { user: UserAdmin | null, isLoading: boolean, error: string 
 
 export const loginUser = createAsyncThunk(
     "users/login",
-    async (payload: { name: string | null }, { rejectWithValue }) => {
-        const { name } = payload;
+    async (payload: { user: { name: string | null, password: string } }, { rejectWithValue }) => {
+        const { user } = payload;
         try {
-            const res = await axios.post('/api/login', { name })
+            const res = await axios.post('/api/login', user)
             return res.data.user
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {

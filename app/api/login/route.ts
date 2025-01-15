@@ -3,10 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
     try {
-        const { name } = await req.json();
-        if (name) {
+        const { name, password } = await req.json();
+        if (name && password) {
 
             const userRole = await userPaySchema.findOne({
+                password,
                 name,
                 $or: [
                     { role: "admin" },
@@ -22,7 +23,7 @@ export const POST = async (req: NextRequest) => {
                 throw new Error("لم يتم الدخول بنجاح")
             }
         } else {
-            throw new Error("يرجى إدخال إسم المستخدم")
+            throw new Error("يرجى إدخال إسم المستخدم و كلمة المرور")
         }
     } catch (error) {
         return NextResponse.json({

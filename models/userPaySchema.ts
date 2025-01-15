@@ -28,6 +28,7 @@ const PaymentDetailsSchema = new mongoose.Schema({
 
 const UserPaySchema = new mongoose.Schema({
     name: { type: String, required: true },
+    password: { type: String },
     homeNumber: { type: Number, required: true, unique: true },
     role: { type: String, enum: ['admin', 'superAdmin', 'user'], default: "user" },
     paymentDetails: { type: [PaymentDetailsSchema] }

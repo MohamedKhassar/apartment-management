@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import StoreProvider from "@/lib/StoreProvider";
 import Loader from "@/components/Loader";
 import logo from "@/public/images/logo.png";
+import NetworkProvider from "@/components/NetworkProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,10 +33,11 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Loader />
-
-          <NavBar />
-          {children}
+          <NetworkProvider>
+            <Loader />
+            <NavBar />
+            {children}
+          </NetworkProvider>
         </body>
       </html>
     </StoreProvider>

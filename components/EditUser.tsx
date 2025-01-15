@@ -26,47 +26,48 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
     };
     const [loading, setLoading] = useState(false);
     const auth = useAppSelector(state => state.auth.user)
+    const showToast = (message: string, type: 'success' | 'error') => {
+        toast[type](message, {
+            style: {
+                fontFamily: "changa",
+            },
+        });
+    };
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (user.name && user.homeNumber) {
-            const arabicRegex = /^[\u0600-\u06FF\s]+$/;
-            if (arabicRegex.test(user.name)) {
-                try {
-                    setLoading(true);
-                    const res = await axios.patch('/api/users', { _id: userData?._id, user });
-                    toast.success(res.data.message, {
-                        style: {
-                            fontFamily: "changa"
-                        }
-                    });
-                    setTimeout(() => {
-                        setLoading(false);
-                        setEditUser(false);
-                    }, 1000);
-                }
-                catch (error) {
-                    if (axios.isAxiosError(error) && error.response) {
-                        toast.error(error.response.data.message, {
-                            style: {
-                                fontFamily: "changa"
-                            }
-                        });
-                    }
-                }
 
-            } else {
-                toast.error("الإسم يجب أن يكون عربي", {
-                    style: {
-                        fontFamily: "changa"
-                    }
-                });
+        // Check if all required fields are provided
+        if (!user.name || !user.homeNumber) {
+            showToast('المرجو ملئ جميع المعلومات', 'error');
+            return;
+        }
+
+        // Validate that the name is in Arabic
+        const arabicRegex = /^[\u0600-\u06FF\s]+$/;
+        if (!arabicRegex.test(user.name)) {
+            showToast('الإسم يجب أن يكون عربي', 'error');
+            return;
+        }
+
+        // If role is not USER and password is empty, prompt user to fill all information
+        if (user.role !== RoleEnum.USER && !user.password) {
+            showToast("المرجو ملئ جميع المعلومات", 'error');
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const res = await axios.patch('/api/users', { _id: userData?._id, user });
+            showToast(res.data.message, 'success');
+            setTimeout(() => {
+                setLoading(false);
+                setEditUser(false);
+            }, 1000);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                showToast(error.response.data.message, 'error');
             }
-        } else {
-            toast.error('المرجو ملئ جميع المعلومات', {
-                style: {
-                    fontFamily: "changa"
-                }
-            });
         }
     };
 
@@ -167,7 +168,7 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
                 </div>
             }
             {
-                (user.role != RoleEnum.USER && (auth?.role == RoleEnum.SUPER_ADMIN || auth?.name == user.name)) &&
+                (user.role != RoleEnum.USER && (auth?.role == RoleEnum.SUPER_ADMIN || auth?.name == userData.name)) &&
                 <div className="mb-4">
                     <label
                         className="block text-gray-700 font-medium mb-2"

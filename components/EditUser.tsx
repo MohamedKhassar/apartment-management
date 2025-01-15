@@ -13,7 +13,6 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
         homeNumber: userData.homeNumber || 0,
         role: userData.role,
         paymentDetails: userData.paymentDetails,
-        phoneNumber: userData?.phoneNumber ? `${userData?.phoneNumber}` : undefined,
     })
     const handleData = (key: string, value: string | number) => {
         setUser((prevData) => ({
@@ -28,36 +27,27 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
         if (user.name && user.homeNumber) {
             const arabicRegex = /^[\u0600-\u06FF\s]+$/;
             if (arabicRegex.test(user.name)) {
-                console.log(user.phoneNumber?.length == 10);
-                if (user.phoneNumber?.length == 10 || user.phoneNumber?.length == 0 || user.phoneNumber == undefined) {
-                    try {
-                        setLoading(true);
-                        const res = await axios.patch('/api/users', { _id: userData?._id, user });
-                        toast.success(res.data.message, {
-                            style: {
-                                fontFamily: "changa"
-                            }
-                        });
-                        setTimeout(() => {
-                            setLoading(false);
-                            setEditUser(false);
-                        }, 1000);
-                    }
-                    catch (error) {
-                        if (axios.isAxiosError(error) && error.response) {
-                            toast.error(error.response.data.message, {
-                                style: {
-                                    fontFamily: "changa"
-                                }
-                            });
-                        }
-                    }
-                } else {
-                    toast.error("رقم الهاتف يجب أن لا يتعدى أو يقل عن 10 أرقام", {
+                try {
+                    setLoading(true);
+                    const res = await axios.patch('/api/users', { _id: userData?._id, user });
+                    toast.success(res.data.message, {
                         style: {
                             fontFamily: "changa"
                         }
                     });
+                    setTimeout(() => {
+                        setLoading(false);
+                        setEditUser(false);
+                    }, 1000);
+                }
+                catch (error) {
+                    if (axios.isAxiosError(error) && error.response) {
+                        toast.error(error.response.data.message, {
+                            style: {
+                                fontFamily: "changa"
+                            }
+                        });
+                    }
                 }
 
             } else {
@@ -144,24 +134,6 @@ const EditUserForm = ({ userData, setEditUser }: { userData: UserPay, setEditUse
                     }
                     placeholder="Enter home number"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                />
-            </div>
-            <div className="mb-4">
-                <label
-                    className="block text-gray-700 font-medium mb-2"
-                    htmlFor="PhoneNumber"
-                >
-                    رقم الهاتف
-                </label>
-                <input
-                    type="text"
-                    id="PhoneNumber"
-                    defaultValue={user?.phoneNumber}
-                    onChange={(e) =>
-                        handleData("phoneNumber", e.target.value)
-                    }
-                    placeholder="ادخل رقم الهاتف"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 placeholder:text-right"
                 />
             </div>
             {role == RoleEnum.SUPER_ADMIN &&

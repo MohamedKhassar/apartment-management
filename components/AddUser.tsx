@@ -88,7 +88,7 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
             {/* Name */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
-                    إسم
+                    إسم<b className="text-red-600">*</b>
                 </label>
                 <input
                     type="text"
@@ -107,7 +107,7 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
                     className="block text-gray-700 font-medium mb-2"
                     htmlFor="homeNumber"
                 >
-                    رقم المنزل
+                    رقم المنزل<b className="text-red-600">*</b>
                 </label>
                 <input
                     type="number"
@@ -119,24 +119,6 @@ const AddUserForm = ({ year, users, setAddNewUser }: { year: number, users: User
                     }
                     placeholder="Enter home number"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                />
-            </div>
-            <div className="mb-4">
-                <label
-                    className="block text-gray-700 font-medium mb-2"
-                    htmlFor="phoneNumber"
-                >
-                    رقم الهاتف
-                </label>
-                <input
-                    type="tel"
-                    id="phoneNumber"
-                    value={user.phoneNumber}
-                    onChange={(e) =>
-                        handleData("phoneNumber", e.target.value)
-                    }
-                    placeholder="ادخل رقم الهاتف"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 placeholder:text-right"
                 />
             </div>
 
